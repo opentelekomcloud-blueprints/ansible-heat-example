@@ -1,0 +1,3 @@
+---
+example_keypair_name: ansible_heat_example_kp
+config_repo: "https://github.com/opentelekomcloud-blueprints/ansible-heat-example"

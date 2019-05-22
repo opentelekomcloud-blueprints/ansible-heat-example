@@ -1,0 +1,11 @@
+---
+
+  - name: Prepare Keypairs
+    hosts: localhost
+    roles:
+      - { role: opentelekomcloud.keypair, keypair_name: "{{ example_keypair_name }}" }
+
+  - name: provision template
+    hosts: localhost
+    roles:
+      - stack

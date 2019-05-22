@@ -1,0 +1,5 @@
+---
+stack_name: example_stack
+template: stack.yml
+environment_files: ['stack.env.yaml']
+keypair: dummy_keypair

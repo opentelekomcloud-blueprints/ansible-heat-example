@@ -1,0 +1,20 @@
+---
+# A playbook, which will be invoked by the ansible-pull from the provisioned
+# server
+
+- name: Provision myself
+  hosts: localhost
+  tasks:
+    - name: do something
+      debug:
+        var: hostvars
+
+    - name: do something else
+      copy:
+        content: "test"
+        dest: "~/test"
+
+    - name: output secret to file
+      copy:
+        content: "{{ secret }}"
+        dest: "~/something_with_secret"

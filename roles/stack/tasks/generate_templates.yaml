@@ -1,0 +1,35 @@
+---
+- name: set template paths
+  set_fact:
+    stack_template_path: "{{ stack_template_pre.path }}/stack.yaml"
+    # master_template_path: "{{ stack_template_pre.path }}/master.yaml"
+    # hosts_template_path: "{{ stack_template_pre.path }}/hosts.yaml"
+    # all_slaves_template_path: "{{ stack_template_pre.path }}/all_slaves.yaml"
+    # one_slave_template_path: "{{ stack_template_pre.path }}/one_slave.yaml"
+    stack_env_template_path: "{{ stack_template_pre.path }}/stack.env.yaml"
+    sec_grp_template_path: "{{ stack_template_pre.path }}/sec_grp.yaml"
+    server_template_path: "{{ stack_template_pre.path }}/server.yaml"
+
+- name: Print out the Heat template directory
+  debug: var=stack_template_pre
+
+- name: generate HOT stack template from jinja2 template
+  template:
+    src: heat/stack.yaml
+    dest: "{{ stack_template_path }}"
+
+- name: generate HOT stack env template from jinja2 template
+  template:
+    src: heat/stack.env.yaml.j2
+    dest: "{{ stack_env_template_path }}"
+
+- name: generate HOT stack SecGrp template from jinja2 template
+  template:
+    src: heat/sec_grp.yaml
+    dest: "{{ sec_grp_template_path }}"
+
+
+- name: generate HOT stack server template from jinja2 template
+  copy:
+    src: heat/server.yaml
+    dest: "{{ server_template_path }}"

@@ -1,0 +1,37 @@
+---
+- block:
+  - name: create HOT stack template prefix
+    register: stack_template_pre
+    tempfile:
+      state: directory
+      prefix: ansible-heat-example
+
+  - name: Create stack templates
+    include_tasks: generate_templates.yaml
+
+  - name: Create stack
+    os_stack:
+      name: "{{ stack_name }}"
+      template: "{{ stack_template_path }}"
+      state: present
+      environment: ["{{ stack_env_template_path }}"]
+      timeout: 600
+    register:
+      stack_output
+
+    # Here we have possibility to deploy get IPs of started instances
+    # through stack_output and deploy some "inventories" or "secrets",
+    # so that ansible-pull on instances have access to additional data,
+    # which should not land in git
+  - name: restructure output
+    set_fact:
+      stack_data: "{{ stack_data | default([]) | combine( {item['output_key']: item['output_value']} ) }}"
+    with_items: "{{ stack_output.stack.outputs }}"
+
+  - name: Debug Server IP address
+    debug:
+      msg: "Server IP is {{ stack_data.server.public_ip }}"
+
+  always:
+    - name: CleanUp
+      include_tasks: cleanup.yaml
