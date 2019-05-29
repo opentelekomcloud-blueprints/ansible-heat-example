@@ -173,6 +173,17 @@ resources:
 
         echo "secret: ${RANDOM}" > ~/variables.yaml
 
+        echo "I am new here, add me to DNS"
+
+  server_delete_sc:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: script
+      config: |
+        #!/bin/bash -x
+
+        echo "I am dying, forget me"
+
   prepare_installer_deployment:
     type: OS::Heat::SoftwareDeployment
     depends_on:
@@ -185,6 +196,18 @@ resources:
       input_values:
         galaxy_roles:
           - { get_param: common_role_name }
+      server: { get_attr: [ server, id ] }
+
+  server_delete_deployment:
+    type: OS::Heat::SoftwareDeployment
+    depends_on:
+      - server
+      - server_delete_sc
+    properties:
+      actions: ['DELETE']
+      name: server_delete_deployment
+      signal_transport: TEMP_URL_SIGNAL
+      config: { get_resource: server_delete_sc }
       server: { get_attr: [ server, id ] }
 
 outputs:

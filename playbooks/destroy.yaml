@@ -1,0 +1,14 @@
+---
+
+  - name: Prepare Keypairs
+    hosts: localhost
+    vars:
+      state: absent
+    tasks:
+      - include_role:
+          name: stack
+          tasks_from: destroy.yaml
+      - include_role:
+          name: opentelekomcloud.keypair
+        vars:
+          keypair_name: "{{ example_keypair_name }}"

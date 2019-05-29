@@ -20,7 +20,7 @@ Templates may use SoftwareConfig and SoftwareDeployment resources. It gives a be
     heat-config-salt \
     heat-config-script \
     -o fedora-software-config.qcow2
-  openstack image create --disk-format qcow2 --container-format bare --min-disk 6 --min-ram 512 fedora-software-config -f fedora-software-config.qcow2
+  openstack image create --disk-format qcow2 --container-format bare --min-disk 6 --min-ram 512 fedora-software-config --file fedora-software-config.qcow2
 ```
 
 # Description
@@ -39,4 +39,9 @@ setting of the OS_CLOUD env variable, or all the way with only env):
 
 ```
   ansible-playbook -i inventory/testing playbooks/main.yaml
+```
+
+Destroing the resources can be achieved by:
+```
+  ansible-playbook -i inventory/testing playbooks/destroy.yaml
 ```
